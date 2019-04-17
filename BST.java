@@ -45,7 +45,7 @@ class BST<D>{
         postTraverse(r.right);
         System.out.print(r.val+"\t");
     }
-      private TreeNode search(Integer val, TreeNode<Integer> rt)
+      private Node search(Integer val, Node<D> rt)
     {
         if(val==rt.val)
         return rt;
@@ -66,7 +66,7 @@ class BST<D>{
     }
     public void search(Integer val)
     {
-        TreeNode x=search(val, root);
+        Node<D> x=search(val, root);
         if(x==null)
         System.out.println("Element not found");
         else
@@ -90,7 +90,7 @@ class BST<D>{
             x=null;
             else if(x.right==null && x.left!=null)
             {
-                TreeNode parent=findParent(x,root);
+                Node parent=findParent(x,root);
                 if(parent.right==x)
                 parent.right=x.left;
                 else
@@ -98,7 +98,7 @@ class BST<D>{
             }
             else if(x.left==null && x.right!=null)
             {
-                TreeNode parent=findParent(x,root);
+                Node parent=findParent(x,root);
                 if(parent.right==x)
                 parent.right=x.right;
                 else
@@ -106,7 +106,7 @@ class BST<D>{
             }
             else
             {
-                TreeNode<Integer> par=x.left;
+                Node<D> par=x.left;
                 while(par.right!=null)
                 {
                     par=par.right;

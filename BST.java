@@ -1,139 +1,115 @@
-class BST<D>{
+class BST<D> {
     Node<D> root;
-    BST()
-    {
-        root=null;
+
+    BST(D value) {
+        root = new Node(value);
     }
-    public void insert(D val){
-        Node<D>ob = new Node<D>(val);
-        Node<D>hop = root;
-        if(root==null){
-            root =ob;
+
+    public void insert(D val) {
+        insert(root, val);
+    }
+
+    private Node insert(Node rt, D value) {
+        if (rt == null) {
+            rt = new Node(value);
+        } else {
+            if ((Integer) value > (Integer) rt.val) {
+
+                rt.right = insert(rt.right, value);
+            } else {
+                rt.left = insert(rt.left, value);
+            }
+        }
+        return rt;
+    }
+
+    public Node search(Node rt, D value) {
+        if ((Integer) value == (Integer) rt.val)
+            return rt;
+        else if ((Integer) value < (Integer) rt.val) {
+            if (rt.left != null)
+                return search(rt.left, value);
+            else
+                return null;
+        } else {
+            if (rt.right != null)
+                return search(rt.right, value);
+            else
+                return null;
+        }
+    }
+
+    public Node FindParent(Node rt, D value) {
+        if (rt.right != null && rt.right.val == value) {
+                   return rt;
+        } else if (rt.left != null && rt.left.val == value) {
+                    return rt;
+        } else {
+            if ((Integer) rt.val > (Integer) value) {
+                return FindParent(rt.left, value);
+            } else {
+                return FindParent(rt.right, value);
+            }
+        }
+    }
+    public void Delete(D value) {
+        Node t = search(root, value);
+        if (t.right == null && t.left == null) {
+            Node Parent = FindParent(root, value);
+            if((Integer)Parent.val >(Integer) t.val)
+                Parent.left=null;
+            else
+                Parent.right = null;
+        
+        } else if (t.right == null) {
+            Node Parent = FindParent(root, value);
+            if((Integer)Parent.val >(Integer) t.val)
+                Parent.left=t.left;
+            else
+                Parent.right = t.left;
+        } else if (t.left == null) {
+            Node Parent = FindParent(root, value);
+            if((Integer)Parent.val > (Integer) t.val)
+                Parent.left=t.right;
+            else
+                Parent.right = t.right;
         }
         else{
-            while(true){
-                if((Integer)val>(int)hop.val){
-                    if(hop.right==null)
-                        break;
-                    else
-                        hop=hop.right;              
-                }
-                else{   
-                    if(hop.left==null)
-                        break;
-                    else
-                        hop=hop.left;               
-                }
-            }
-            if((Integer)val>(int)hop.val)
-                hop.right = ob;
-            else
-                hop.left = ob;
-        } 
+            Node<D> Child = Child(t.right);
+            Integer  temp = (Integer)Child.val;
+            Delete(Child.val);
+            t.val=(D)temp;
+        }
     }
-    public void infixTraverse(Node r){
-        if(r==null)
-            return ;
+    public Node Child(Node x){
+        if(x.left == null)
+        return x;
+        else 
+            return Child(x.left);
+    }
+
+    public void infixTraverse(Node r) {
+        if (r == null)
+            return;
         infixTraverse(r.left);
-        System.out.print(r.val+"\t");
+        System.out.print(r.val + "\t");
         infixTraverse(r.right);
     }
-    public void postTraverse(Node r){
-        if(r==null)
-            return ;
+
+    public void postTraverse(Node r) {
+        if (r == null)
+            return;
         postTraverse(r.left);
         postTraverse(r.right);
-        System.out.print(r.val+"\t");
+        System.out.print(r.val + "\t");
     }
-      private Node search(Integer val, Node<D> rt)
-    {
-        if(val==rt.val)
-        return rt;
-        else if(val<rt.val)
-        {
-            if(rt.left!=null)
-                return search(val, rt.left);
-            else
-                return null;
-        }
-        else
-        {
-            if(rt.right!=null)
-                return search(val, rt.right);
-            else
-                return null;
-        }
-    }
-    public void search(Integer val)
-    {
-        Node<D> x=search(val, root);
-        if(x==null)
-        System.out.println("Element not found");
-        else
-        System.out.println("Element Found");
-    }
-    public void preTraverse(Node r){
-        if(r==null)
-            return ;
-        System.out.print(r.val+"\t");
+
+    public void preTraverse(Node r) {
+        if (r == null)
+            return;
+        System.out.print(r.val + "\t");
         preTraverse(r.left);
         preTraverse(r.right);
     }
-     public void delete(Integer val)
-    {
-        TreeNode x=search(val, root);
-        if(x==null)
-        throw new NoSuchElementException();
-        else
-        {
-            if(x.right==null && x.left==null)
-            x=null;
-            else if(x.right==null && x.left!=null)
-            {
-                Node parent=findParent(x,root);
-                if(parent.right==x)
-                parent.right=x.left;
-                else
-                parent.left=x.left;
-            }
-            else if(x.left==null && x.right!=null)
-            {
-                Node parent=findParent(x,root);
-                if(parent.right==x)
-                parent.right=x.right;
-                else
-                parent.left=x.right;
-            }
-            else
-            {
-                Node<D> par=x.left;
-                while(par.right!=null)
-                {
-                    par=par.right;
-                }
-                int temp=par.val;
-                delete(par.val);
-                x.val=temp;
-            }
-        }
-    }
-  
-    public static void main(String[] args){
-           BST a = new BST();
-           a.insert(3);
-           a.insert(-2);
-           a.insert(10);
-           a.insert(0);
-           a.insert(-4);
-           a.insert(-10);
-           a.insert(5);
-           a.insert(11);           
-           a.insert(6);
-           System.out.println("\nInorder Traversal");
-           a.infixTraverse(a.root);
-           System.out.println("\nPostorder Traversal");
-           a.postTraverse(a.root);
-           System.out.println("\nPreorder Traversal");
-           a.preTraverse(a.root);
-    }
+
 }

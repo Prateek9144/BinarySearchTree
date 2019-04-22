@@ -28,14 +28,10 @@ class BST<D> {
             return rt;
         else if ((Integer) value < (Integer) rt.val) {
             if (rt.left != null)
-                return search(rt.left, value);
-            else
-                return null;
+                rt=rt.left;
         } else {
             if (rt.right != null)
-                return search(rt.right, value);
-            else
-                return null;
+                rt=rt.right;
         }
     }
 

@@ -1,7 +1,7 @@
-public class Node<D>{
-    D val;
+public class Node{
+    int val;
     Node right,left;
-    Node(D val)
+    Node(int val)
     {
 	    left = null;
 	    right = null;

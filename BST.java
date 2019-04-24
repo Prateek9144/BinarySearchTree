@@ -1,19 +1,19 @@
-class BST<D> {
-    Node<D> root;
+class BST {
+    Node root;
 
     BST() {
         root = null;
     }
 
-    public void insert(D val) {
+    public void insert(int val) {
         root = insert(root, val);
     }
 
-    private Node<D> insert(Node<D> rt, D value) {
+    private Node insert(Node rt, int value) {
         if (rt == null) {
-            rt = new Node<D>(value);
+            rt = new Node(value);
         } else {
-            if ((Integer) value > (Integer) rt.val) {
+            if (value > rt.val) {
                 rt.right = insert(rt.right, value);
             } else {
                 rt.left = insert(rt.left, value);
@@ -22,24 +22,24 @@ class BST<D> {
         return rt;
     }
 
-    public Node<D> search(Node<D> rt, D value) {
-        if ((Integer) value == (Integer) rt.val)
+    public Node search(Node rt, int value) {
+        if (value == rt.val)
             return rt;
         else {
-            if ((Integer) value < (Integer) rt.val)            
-                    return search(rt.left, value);
-            else 
-                    return search(rt.right, value);              
+            if (value < rt.val)
+                return search(rt.left, value);
+            else
+                return search(rt.right, value);
         }
     }
 
-    public Node<D> FindParent(Node<D> rt, D value) {
+    public Node FindParent(Node rt, int value) {
         if (rt.right != null && rt.right.val == value) {
             return rt;
         } else if (rt.left != null && rt.left.val == value) {
             return rt;
         } else {
-            if ((Integer) rt.val > (Integer) value) {
+            if (rt.val > value) {
                 return FindParent(rt.left, value);
             } else {
                 return FindParent(rt.right, value);
@@ -47,54 +47,55 @@ class BST<D> {
         }
     }
 
-    public void Delete(D value) {
+    public void Delete(int value) {
         Node t = search(root, value);
         if (t.right == null && t.left == null) {
-            if ((Integer) t.val == (Integer) root.val)
+            if (t.val == root.val)
                 root = null;
             {
                 Node Parent = FindParent(root, value);
-                if ((Integer) Parent.val > (Integer) t.val)
+                if (Parent.val > t.val)
                     Parent.left = null;
                 else
                     Parent.right = null;
             }
         } else if (t.right == null) {
-            if ((Integer) t.val == (Integer) root.val) {
-                if (root.left.right == null || root.left.left == null) 
-                root=root.left;  
+            if (t.val == root.val) {
+                if (root.left.right == null || root.left.left == null)
+                    root = root.left;
             } else {
                 Node Parent = FindParent(root, value);
-                if ((Integer) Parent.val > (Integer) t.val)
+                if (Parent.val > t.val)
                     Parent.left = t.left;
                 else
                     Parent.right = t.left;
             }
         } else if (t.left == null) {
-            if ((Integer) t.val == (Integer) root.val) {
-                root=root.right;
+            if (t.val == root.val) {
+                root = root.right;
             } else {
-            Node Parent = FindParent(root, value);
-            if ((Integer) Parent.val > (Integer) t.val)
-                Parent.left = t.right;
-            else
-                Parent.right = t.right;
- }       } else {
-            Node<D> Child = Child(t.right);
-            Integer temp = (Integer) Child.val;
+                Node Parent = FindParent(root, value);
+                if (Parent.val > t.val)
+                    Parent.left = t.right;
+                else
+                    Parent.right = t.right;
+            }
+        } else {
+            Node Child = Child(t.right);
+            int temp = Child.val;
             Delete(Child.val);
-            t.val = (D) temp;
+            t.val = temp;
         }
     }
 
-    public Node<D> Child(Node<D> x) {
+    public Node Child(Node x) {
         if (x.left == null)
             return x;
         else
             return Child(x.left);
     }
- 
-    public void infixTraverse(Node<D> r) {
+
+    public void infixTraverse(Node r) {
         if (r == null)
             return;
         infixTraverse(r.left);
@@ -102,7 +103,7 @@ class BST<D> {
         infixTraverse(r.right);
     }
 
-    public void postTraverse(Node<D> r) {
+    public void postTraverse(Node r) {
         if (r == null)
             return;
         postTraverse(r.left);
@@ -110,7 +111,7 @@ class BST<D> {
         System.out.print(r.val + "\t");
     }
 
-    public void preTraverse(Node<D> r) {
+    public void preTraverse(Node r) {
         if (r == null)
             return;
         System.out.print(r.val + "\t");

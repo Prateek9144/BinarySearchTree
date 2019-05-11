@@ -34,7 +34,7 @@ class BST {
                 rt = null;
             else {
                 if (rt.right == null)
-                    rt = rt.right;
+                    rt = rt.left;
                 else if (rt.left == null)
                     rt = rt.right;
                 else {

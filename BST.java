@@ -1,5 +1,7 @@
+import org.omg.CORBA.portable.Delegate;
+
 class BST {
-    Node root;
+    NodeBST root;
 
     BST() {
         root = null;
@@ -9,9 +11,9 @@ class BST {
         root = insert(root, val);
     }
 
-    private Node insert(Node rt, int value) {
+    private NodeBST insert(NodeBST rt, int value) {
         if (rt == null) {
-            rt = new Node(value);
+            rt = new NodeBST(value);
         } else {
             if (value > rt.val) {
                 rt.right = insert(rt.right, value);
@@ -22,80 +24,39 @@ class BST {
         return rt;
     }
 
-    public Node search(Node rt, int value) {
-        if (value == rt.val)
-            return rt;
-        else {
-            if (value < rt.val)
-                return search(rt.left, value);
-            else
-                return search(rt.right, value);
-        }
-    }
-
-    public Node FindParent(Node rt, int value) {
-        if (rt.right != null && rt.right.val == value) {
-            return rt;
-        } else if (rt.left != null && rt.left.val == value) {
-            return rt;
-        } else {
-            if (rt.val > value) {
-                return FindParent(rt.left, value);
-            } else {
-                return FindParent(rt.right, value);
-            }
-        }
-    }
-
     public void Delete(int value) {
-        Node t = search(root, value);
-        if (t.right == null && t.left == null) {
-            if (t.val == root.val)
-                root = null;
-            {
-                Node Parent = FindParent(root, value);
-                if (Parent.val > t.val)
-                    Parent.left = null;
-                else
-                    Parent.right = null;
-            }
-        } else if (t.right == null) {
-            if (t.val == root.val) {
-                if (root.left.right == null || root.left.left == null)
-                    root = root.left;
-            } else {
-                Node Parent = FindParent(root, value);
-                if (Parent.val > t.val)
-                    Parent.left = t.left;
-                else
-                    Parent.right = t.left;
-            }
-        } else if (t.left == null) {
-            if (t.val == root.val) {
-                root = root.right;
-            } else {
-                Node Parent = FindParent(root, value);
-                if (Parent.val > t.val)
-                    Parent.left = t.right;
-                else
-                    Parent.right = t.right;
+        root = Delete(root, value);
+    }
+
+    private NodeBST Delete(NodeBST rt, int value) {
+        if (rt.val == value) {
+            if (rt.left == null && rt.right == null)
+                rt = null;
+            else {
+                if (rt.right == null)
+                    rt = rt.right;
+                else if (rt.left == null)
+                    rt = rt.right;
+                else {
+                    NodeBST temp = rt.left;
+                    while (temp.right != null)
+                        temp = temp.right;
+                    int x = temp.val;
+                    Delete(temp.val);
+                    rt.val = x;
+                }
             }
         } else {
-            Node Child = Child(t.right);
-            int temp = Child.val;
-            Delete(Child.val);
-            t.val = temp;
+            if (value > rt.val) {
+                rt.right = Delete(rt.right, value);
+            } else {
+                rt.left = Delete(rt.left, value);
+            }
         }
+        return rt;
     }
 
-    public Node Child(Node x) {
-        if (x.left == null)
-            return x;
-        else
-            return Child(x.left);
-    }
-
-    public void infixTraverse(Node r) {
+    public void infixTraverse(NodeBST r) {
         if (r == null)
             return;
         infixTraverse(r.left);
@@ -103,7 +64,7 @@ class BST {
         infixTraverse(r.right);
     }
 
-    public void postTraverse(Node r) {
+    public void postTraverse(NodeBST r) {
         if (r == null)
             return;
         postTraverse(r.left);
@@ -111,7 +72,7 @@ class BST {
         System.out.print(r.val + "\t");
     }
 
-    public void preTraverse(Node r) {
+    public void preTraverse(NodeBST r) {
         if (r == null)
             return;
         System.out.print(r.val + "\t");

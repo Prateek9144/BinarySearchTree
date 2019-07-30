@@ -1,7 +1,7 @@
-public class Node{
+public class NodeBST{
     int val;
-    Node right,left;
-    Node(int val)
+    NodeBST right,left;
+    NodeBST(int val)
     {
 	    left = null;
 	    right = null;
